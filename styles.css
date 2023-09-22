@@ -1,0 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
+#game-area {
+    border: 2px solid black;
+}
