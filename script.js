@@ -20,8 +20,8 @@ const snakeUnitSize = 10
 let speed = 10
 
 //let running = false
-let xVelocity = snakeUnitSize
-let yVelocity = 0
+let xMovement = snakeUnitSize
+let yMovement = 0
 
 
 let snake = [
@@ -64,9 +64,17 @@ const drawSnake = () => {
     })
 }
 
+const moveSnake = () => {
+    const snakeHead = {x: snake[0].x + xMovement,
+                       y: snake[0].y + yMovement }
+
+    snake.unshift(snakeHead)
+}
+
 //draws the game in each frame, determines refresh rate
 const drawBoard = () => {
     clearBoard()
+    moveSnake()
     drawSnake()
     setTimeout(drawBoard, 1000/ speed)
 }
@@ -76,16 +84,18 @@ drawBoard()
 
 const createFood = () => {}
 const drawFood = () => {}
-const moveSnake = () => {}
 
 
-const changeDirection = () => {}
+
+const changeDirection = (event) => {
+    const pressedKey = event.keyCode
+}
 const checkGameOver = () => {}
 const displayGameOver = () => {}
 const resetGame = () => {}
 
 
 // Event listener for arrow keys
-
+window.addEventListener('keydown', changeDirection)
 
 
