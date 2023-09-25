@@ -15,11 +15,16 @@ const gameHeight = gameBoard.height
 
 const gameBackground = "black"
 const snakeColor = "#0cff0c"
+const foodColor = '#ff073a'
 
-const snakeUnitSize = 10
-let speed = 15
+const snakeUnitSize = 20
+const foodUnitSize = 20
 
-//let running = false
+let speed = 12
+
+let running = false
+
+
 let xMovement = snakeUnitSize
 let yMovement = 0
 
@@ -29,9 +34,7 @@ let snake = [
     {x: snakeUnitSize, y: 0},
     {x: 0, y: 0}
 ]
-//const food = 
 
-//let gameSpeed = 1
 
 
 
@@ -51,7 +54,7 @@ let snake = [
 
 
 // Functions for Scoring, Game Menu, Start Game, and Game Over
-const startGame = () => {}
+
 const clearBoard = () => {
     ctx.fillStyle = gameBackground
     ctx.fillRect(0, 0, gameWidth, gameHeight)
@@ -69,7 +72,7 @@ const moveSnake = () => {
                        y: snake[0].y + yMovement }
 
     snake.unshift(snakeHead)
-    //NEED to update false with food eaten logic
+    //***NEED to update false with food eaten logic***
     if(false){
 
     } else {
@@ -78,22 +81,24 @@ const moveSnake = () => {
 
 }
 
-//draws the game in each frame, determines refresh rate
-const drawBoard = () => {
-    clearBoard()
-    moveSnake()
-    drawSnake()
-    setTimeout(drawBoard, 1000/ speed)
+
+
+
+const createFood = () => {
+    const randFoodLoc = (min, max) => {
+        let randNum = Math.round((Math.random() * (max - min) + min) / foodUnitSize) * foodUnitSize
+        return randNum
+    }
+    foodX = randFoodLoc(0, gameWidth - foodUnitSize)
+    foodY = randFoodLoc(0, gameWidth - foodUnitSize)
+}
+const drawFood = () => {
+    ctx.fillStyle = foodColor
+    ctx.fillRect(foodX, foodY, foodUnitSize, foodUnitSize)
 }
 
-drawBoard()
 
-
-const createFood = () => {}
-const drawFood = () => {}
-
-
-
+// Using arrow keys to change direction of the snake
 const changeDirection = (event) => {
     const pressedKey = event.keyCode
     let upArrow = 38
@@ -106,6 +111,7 @@ const changeDirection = (event) => {
     const movingLeft = (xMovement == -snakeUnitSize)
     const movingRight = (xMovement == snakeUnitSize)
 
+    // Movement according to game rules
     switch(true) {
         //UP
         case(pressedKey == upArrow && !movingDown):
@@ -130,6 +136,30 @@ const changeDirection = (event) => {
     }
         
 }
+
+const startGame = () => {
+    running = true
+    createFood()
+    drawFood()
+    drawBoard()
+}
+
+//draws the game in each frame, determines refresh rate
+const drawBoard = () => {
+    if(running) {
+        setTimeout(() => {
+            clearBoard()
+            drawFood()
+            moveSnake()
+            drawSnake()
+            drawBoard()
+        }, 1000 / speed)
+    }
+}
+
+startGame()
+
+
 const checkGameOver = () => {}
 const displayGameOver = () => {}
 const resetGame = () => {}
