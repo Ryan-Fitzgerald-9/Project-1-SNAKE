@@ -10,7 +10,25 @@ const modeBtn = document.querySelector('#difficulty')
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
 
-let gameSpeed = 1
+const gameBackground = "black"
+const snakeColor = "#0cff0c"
+
+const snakeUnitSize = 10
+let speed = 10
+
+//let running = false
+let xVelocity = snakeUnitSize
+let yVelocity = 0
+
+
+let snake = [
+    {x: snakeUnitSize * 2, y: 0},
+    {x: snakeUnitSize, y: 0},
+    {x: 0, y: 0}
+]
+//const food = 
+
+//let gameSpeed = 1
 
 
 
@@ -31,12 +49,31 @@ let gameSpeed = 1
 
 // Functions for Scoring, Game Menu, Start Game, and Game Over
 const startGame = () => {}
-const clearBoard = () => {}
-const nextTick = () => {}
+const clearBoard = () => {
+    ctx.fillStyle = gameBackground
+    ctx.fillRect(0, 0, gameWidth, gameHeight)
+}
+// const drawSnake = () => {
+//     ctx.fillStyle = snakeColor
+//     snake.forEach(snakeBlock => {
+//         ctx.fillRect(snakeBlock.x, snakeBlock.y, snakeUnitSize, snakeUnitSize)
+//     })
+// }
+
+const drawBoard = () => {
+    clearBoard()
+    // drawSnake()
+    setTimeout(drawBoard, 1000/ speed)
+}
+
+drawBoard()
+
+
 const createFood = () => {}
 const drawFood = () => {}
 const moveSnake = () => {}
-const drawSnake = () => {}
+
+
 const changeDirection = () => {}
 const checkGameOver = () => {}
 const displayGameOver = () => {}
