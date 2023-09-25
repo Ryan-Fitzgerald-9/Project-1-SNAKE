@@ -17,7 +17,7 @@ const gameBackground = "black"
 const snakeColor = "#0cff0c"
 
 const snakeUnitSize = 10
-let speed = 10
+let speed = 15
 
 //let running = false
 let xMovement = snakeUnitSize
@@ -69,6 +69,13 @@ const moveSnake = () => {
                        y: snake[0].y + yMovement }
 
     snake.unshift(snakeHead)
+    //NEED to update false with food eaten logic
+    if(false){
+
+    } else {
+        snake.pop()
+    }
+
 }
 
 //draws the game in each frame, determines refresh rate
@@ -89,6 +96,39 @@ const drawFood = () => {}
 
 const changeDirection = (event) => {
     const pressedKey = event.keyCode
+    let upArrow = 38
+    let downArrow = 40
+    let leftArrow = 37
+    let rightArrow = 39
+
+    const movingUp = (yMovement == -snakeUnitSize)
+    const movingDown = (yMovement == snakeUnitSize)
+    const movingLeft = (xMovement == -snakeUnitSize)
+    const movingRight = (xMovement == snakeUnitSize)
+
+    switch(true) {
+        //UP
+        case(pressedKey == upArrow && !movingDown):
+            xMovement = 0
+            yMovement = -snakeUnitSize
+            break;
+        //DOWN
+        case(pressedKey == downArrow && !movingUp):
+            xMovement = 0
+            yMovement = snakeUnitSize
+            break;
+        //LEFT
+        case(pressedKey == leftArrow && !movingRight):
+            xMovement = -snakeUnitSize
+            yMovement = 0
+            break;
+        //RIGHT
+        case(pressedKey == rightArrow && !movingLeft):
+            xMovement = snakeUnitSize
+            yMovement = 0
+            break;        
+    }
+        
 }
 const checkGameOver = () => {}
 const displayGameOver = () => {}
