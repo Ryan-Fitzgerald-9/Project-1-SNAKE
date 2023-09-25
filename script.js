@@ -1,11 +1,14 @@
 // Define variables (snake, dot, scoreboard...)
 const gameBoard = document.querySelector('#game-area')
+//canvas & ctx found on W3Schools
 const ctx = gameBoard.getContext("2d")
 const scoreCurrent = document.querySelector('#score-current')
 const scoreHigh = document.querySelector('#score-high')
 const startBtn = document.querySelector('#start-button')
 const resetBtn = document.querySelector('#restart-button')
 const modeBtn = document.querySelector('#difficulty')
+
+
 
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
@@ -53,16 +56,18 @@ const clearBoard = () => {
     ctx.fillStyle = gameBackground
     ctx.fillRect(0, 0, gameWidth, gameHeight)
 }
-// const drawSnake = () => {
-//     ctx.fillStyle = snakeColor
-//     snake.forEach(snakeBlock => {
-//         ctx.fillRect(snakeBlock.x, snakeBlock.y, snakeUnitSize, snakeUnitSize)
-//     })
-// }
+//draws each snake unit, fills neon green
+const drawSnake = () => {
+    ctx.fillStyle = snakeColor
+    snake.forEach(snakeBlock => {
+        ctx.fillRect(snakeBlock.x, snakeBlock.y, snakeUnitSize, snakeUnitSize)
+    })
+}
 
+//draws the game in each frame, determines refresh rate
 const drawBoard = () => {
     clearBoard()
-    // drawSnake()
+    drawSnake()
     setTimeout(drawBoard, 1000/ speed)
 }
 
