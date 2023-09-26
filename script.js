@@ -60,20 +60,20 @@ const clearBoard = () => {
     ctx.fillStyle = gameBackground
     ctx.fillRect(0, 0, gameWidth, gameHeight)
 }
-//draws each snake unit, fills neon green
+// Draws each snake unit, fills neon green
 const drawSnake = () => {
     ctx.fillStyle = snakeColor
     snake.forEach(snakeBlock => {
         ctx.fillRect(snakeBlock.x, snakeBlock.y, snakeUnitSize, snakeUnitSize)
     })
 }
-
+// Moves snake, adds a new block when snake head and food meet
 const moveSnake = () => {
     const snakeHead = {x: snake[0].x + xMovement,
                        y: snake[0].y + yMovement }
 
     snake.unshift(snakeHead)
-    //***NEED to update false with food eaten logic***
+    
     if(snake[0].x == foodX && snake[0].y == foodY) {
         score += 1
         scoreCurrent.textContent = score
@@ -107,6 +107,7 @@ const drawFood = () => {
 // Using arrow keys to change direction of the snake
 const changeDirection = (event) => {
     const pressedKey = event.keyCode
+    // Used console.log to identify arrow #s
     let upArrow = 38
     let downArrow = 40
     let leftArrow = 37
@@ -143,6 +144,28 @@ const changeDirection = (event) => {
         
 }
 
+const checkGameOver = () => {
+    switch(true) {
+        case (snake[0].x < 0):
+            running = false
+            break
+        case (snake[0].x >= gameWidth):
+            running = false
+            break 
+        case (snake[0].y < 0):
+            running = false
+            break
+        case (snake[0].y >= gameHeight):
+            running = false
+            break    
+    }
+    for(let i = 1; i < snake.length; i+= 1) {
+        if(snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
+            running = false
+        }
+    }
+}
+
 const startGame = () => {
     running = true
     //scoreCurrent.textContent = score
@@ -172,7 +195,7 @@ const drawBoard = () => {
 
 startGame()
 
-const checkGameOver = () => {}
+
 const displayGameOver = () => {}
 const resetGame = () => {}
 
