@@ -17,7 +17,8 @@ const foodColor = '#ff073a'
 const snakeUnitSize = 15
 const foodUnitSize = 15
 
-let speed = 14
+let speed = 10
+let timeout = setTimeout
 
 let running = false
 
@@ -26,35 +27,14 @@ let yMovement = 0
 let score = 0
 
 let snake = [
+    {x: snakeUnitSize * 3, y: 0},
     {x: snakeUnitSize * 2, y: 0},
     {x: snakeUnitSize, y: 0},
     {x: 0, y: 0}
 ]
 
-// Functions
 
-
-
-
-
-
-
-// Snake movement, create out-of-bounds
-
-
-// Logic for dot (scoring and then random location)
-
-
-// Adding blocks to end of snake after each point
-
-
-// Game Over logic (moving into wall or itself)
-
-
-// Creating difficulty settings (smaller blocks and faster movement?)
-
-
-// Functions for Scoring, Game Menu, Start Game, and Game Over
+// FUNCTIONS
 
 const clearBoard = () => {
     ctx.fillStyle = gameBackground
@@ -76,7 +56,7 @@ const moveSnake = () => {
     
     if(snake[0].x == foodX && snake[0].y == foodY) {
         score += 1
-        scoreCurrent.textContent = score
+        scoreCurrent.innerHTML = `Score: ${score}`
         createFood()
     } 
     else {
@@ -94,7 +74,7 @@ const createFood = () => {
         return randNum
     }
     foodX = randFoodLoc(0, gameWidth - foodUnitSize)
-    foodY = randFoodLoc(0, gameWidth - foodUnitSize)
+    foodY = randFoodLoc(0, gameHeight - foodUnitSize)
 }
 
 // Generates a block of neon red food
@@ -124,41 +104,39 @@ const changeDirection = (event) => {
         case(pressedKey == upArrow && !movingDown):
             xMovement = 0
             yMovement = -snakeUnitSize
-            break;
+            break
         //DOWN
         case(pressedKey == downArrow && !movingUp):
             xMovement = 0
             yMovement = snakeUnitSize
-            break;
+            break
         //LEFT
         case(pressedKey == leftArrow && !movingRight):
             xMovement = -snakeUnitSize
             yMovement = 0
-            break;
+            break
         //RIGHT
         case(pressedKey == rightArrow && !movingLeft):
             xMovement = snakeUnitSize
             yMovement = 0
-            break;        
+            break     
     }
         
 }
-
+// Game over logic => snake running into wall or itself
 const checkGameOver = () => {
-    switch(true) {
-        case (snake[0].x < 0):
+    // added 100ms delay to navigate walls easier
+    setTimeout(() => {
+        switch (true) {
+          case snake[0].x < 0:
+          case snake[0].x >= gameWidth:
+          case snake[0].y < 0:
+          case snake[0].y >= gameHeight:
             running = false
             break
-        case (snake[0].x >= gameWidth):
-            running = false
-            break 
-        case (snake[0].y < 0):
-            running = false
-            break
-        case (snake[0].y >= gameHeight):
-            running = false
-            break    
-    }
+        }
+      }, 100)
+    // Snake head running into its body      
     for(let i = 1; i < snake.length; i+= 1) {
         if(snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
             running = false
@@ -166,12 +144,19 @@ const checkGameOver = () => {
     }
 }
 
-const startGame = () => {
-    running = true
-    //scoreCurrent.textContent = score
-    createFood()
-    drawFood()
-    drawBoard()
+// Displays GAME OVER! in the center of the canvas
+const displayGameOver = () => {
+    ctx.font = "50px Verdana"
+    let gradientGameOver = ctx.createLinearGradient(0, 0, gameBoard.width, 0)
+    gradientGameOver.addColorStop("0", "#70FFDF")
+    gradientGameOver.addColorStop("0.5", "#FF4DF0")
+    gradientGameOver.addColorStop("1.0", "#9D4DFF")
+    
+    // Fill with gradient
+    ctx.fillStyle = gradientGameOver
+    ctx.textAlign = "center"
+    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2)
+    running = false
 }
 
 
@@ -179,7 +164,7 @@ const startGame = () => {
 //draws the game in each frame, determines refresh rate
 const drawBoard = () => {
     if(running) {
-        setTimeout(() => {
+        timeout = setTimeout(() => {
             clearBoard()
             drawFood()
             moveSnake()
@@ -193,14 +178,34 @@ const drawBoard = () => {
     }
 }
 
+const startGame = () => {
+    running = true
+    scoreCurrent.innerHTML = `Score: ${score}`
+    createFood()
+    drawFood()
+    drawBoard()
+}
+
+const resetGame = () => {
+    score = 0
+    xMovement = snakeUnitSize
+    yMovement = 0
+    snake = [
+        {x: snakeUnitSize * 3, y: 0},
+        {x: snakeUnitSize * 2, y: 0},
+        {x: snakeUnitSize, y: 0},
+        {x: 0, y: 0}
+    ]
+    clearTimeout(timeout)
+    startGame()
+}
+
 startGame()
 
-
-const displayGameOver = () => {}
-const resetGame = () => {}
 
 
 // Event listener for arrow keys
 window.addEventListener('keydown', changeDirection)
 resetBtn.addEventListener('click', resetGame)
+
 
