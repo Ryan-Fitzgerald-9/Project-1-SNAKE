@@ -11,7 +11,15 @@
     <div id="startup-screen">
         <h1>SNAKE</h1>
         <button id="lets-play">Start Game</button>
-        <button id="rules">How To Play</button>
+        <button id="openModal">How To Play</button>
+        <div id="modal">
+        <div id="modal-textbox">
+            <a id="close" href="#">Close</a>
+            <h2>How to Play</h2>
+            <p>Direct the snake towards the food (red square) on screen using the arrow keys. Once the food is reached, a point is scored and a new block is added to the current snake. Then, another block of food will appear at a random location on screen. The game ends when the head of the snake either moves into the border or into itself. The goal is to make the snake as large as possible before that happens.</p>
+            <p>Let's see how high you can score!</p>
+        </div>
+        </div>
     </div>
     <div id="container" style="display: none;">
         <div id="current-score">Score: 0</div>
