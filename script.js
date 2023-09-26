@@ -6,6 +6,11 @@ const scoreHigh = document.querySelector('#high-score')
 const startBtn = document.querySelector('#start-button')
 const resetBtn = document.querySelector('#restart-button')
 const gameArena = document.getElementById("container")
+const highScoreValue = document.querySelector("#high-score")
+
+const openBtn = document.getElementById('openModal');
+const modal = document.getElementById('modal')
+const close = document.getElementById('close')
 
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
@@ -24,7 +29,9 @@ let running = false
 
 let xMovement = snakeUnitSize
 let yMovement = 0
+
 let score = 0
+let highScore = 0
 
 let snake = [
     {x: snakeUnitSize * 3, y: 0},
@@ -35,6 +42,12 @@ let snake = [
 
 
 // FUNCTIONS
+
+const updateHighScore = () => {
+    if (score > highScore)
+    highScore = score
+    highScoreValue.textContent = `Best: ${highScore}`
+}
 
 const clearBoard = () => {
     ctx.fillStyle = gameBackground
@@ -142,6 +155,7 @@ const checkGameOver = () => {
             running = false
         }
     }
+     
 }
 
 // Displays GAME OVER! in the center of the canvas
@@ -161,7 +175,7 @@ const displayGameOver = () => {
 
 
 
-//draws the game in each frame, determines refresh rate
+// Draws the game in each frame, determines refresh rate
 const drawBoard = () => {
     if(running) {
         timeout = setTimeout(() => {
@@ -190,8 +204,17 @@ const drawBoard = () => {
     }
     else {
         displayGameOver()
+        updateHighScore()
     }
 }
+
+const openModal = () => {
+    modal.style.display = 'block';
+  }
+  
+  const closeModal = () => {
+    modal.style.display = 'none'
+  }
 
 const startGame = () => {
     running = true
@@ -203,17 +226,18 @@ const startGame = () => {
 }
 
 const resetGame = () => {
-    score = 0
     xMovement = snakeUnitSize
     yMovement = 0
+    score = 0
     snake = [
-        {x: snakeUnitSize * 3, y: 0},
-        {x: snakeUnitSize * 2, y: 0},
-        {x: snakeUnitSize, y: 0},
-        {x: 0, y: 0}
+    {x: snakeUnitSize * 3, y: 0},
+    {x: snakeUnitSize * 2, y: 0},
+    {x: snakeUnitSize, y: 0},
+    {x: 0, y: 0}
     ]
     clearTimeout(timeout)
     clearBoard()
+    
 }
 
 
@@ -236,29 +260,12 @@ document.addEventListener("DOMContentLoaded", function () {
         startupScreen.style.display = "none"
         gameArena.style.display = "block"
     }
+
+    
 })
 
-//Grabbing Elements
-const openBtn = document.getElementById('openModal');
-const modal = document.getElementById('modal')
-const close = document.getElementById('close')
-
-//Functions
-const openModal = () => {
-  modal.style.display = 'block';
-}
-
-const closeModal = () => {
-  modal.style.display = 'none'
-}
-
-//Event Listeners
 openBtn.addEventListener('click', openModal)
 
 close.addEventListener('click', closeModal)
-
-
-
-
 
 
