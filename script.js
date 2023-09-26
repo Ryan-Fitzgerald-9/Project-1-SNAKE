@@ -171,6 +171,21 @@ const drawBoard = () => {
             drawSnake()
             checkGameOver()
             drawBoard()
+            if ( score > 5) {
+                speed = 12
+            }
+            if ( score > 10) {
+                speed = 15
+            }
+            if ( score > 15) {
+                speed = 20
+            }
+            if ( score > 25) {
+                speed = 25
+            }
+            if ( score > 35) {
+                speed = 30
+            }
         }, 1000 / speed)
     }
     else {
@@ -180,6 +195,7 @@ const drawBoard = () => {
 
 const startGame = () => {
     running = true
+    speed = 10
     scoreCurrent.innerHTML = `Score: ${score}`
     createFood()
     drawFood()
