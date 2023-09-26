@@ -5,7 +5,6 @@ const scoreCurrent = document.querySelector('#current-score')
 const scoreHigh = document.querySelector('#high-score')
 const startBtn = document.querySelector('#start-button')
 const resetBtn = document.querySelector('#restart-button')
-const modeBtn = document.querySelector('#difficulty')
 
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
@@ -213,15 +212,16 @@ const resetGame = () => {
         {x: 0, y: 0}
     ]
     clearTimeout(timeout)
-    startGame()
+    clearBoard()
 }
 
-startGame()
 
+clearBoard()
 
 
 // Event listener for arrow keys
 window.addEventListener('keydown', changeDirection)
 resetBtn.addEventListener('click', resetGame)
+startBtn.addEventListener('click', startGame)
 
 
