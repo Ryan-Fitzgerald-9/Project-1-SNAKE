@@ -1,14 +1,11 @@
 // Define variables (snake, dot, scoreboard...)
 const gameBoard = document.querySelector('#game-area')
-//canvas & ctx found on W3Schools
 const ctx = gameBoard.getContext("2d")
-const scoreCurrent = document.querySelector('#score-current')
-const scoreHigh = document.querySelector('#score-high')
+const scoreCurrent = document.querySelector('#current-score')
+const scoreHigh = document.querySelector('#high-score')
 const startBtn = document.querySelector('#start-button')
 const resetBtn = document.querySelector('#restart-button')
 const modeBtn = document.querySelector('#difficulty')
-
-
 
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
@@ -17,23 +14,27 @@ const gameBackground = "black"
 const snakeColor = "#0cff0c"
 const foodColor = '#ff073a'
 
-const snakeUnitSize = 20
-const foodUnitSize = 20
+const snakeUnitSize = 15
+const foodUnitSize = 15
 
-let speed = 12
+let speed = 14
 
 let running = false
 
-
 let xMovement = snakeUnitSize
 let yMovement = 0
-
+let score = 0
 
 let snake = [
     {x: snakeUnitSize * 2, y: 0},
     {x: snakeUnitSize, y: 0},
     {x: 0, y: 0}
 ]
+
+// Functions
+
+
+
 
 
 
@@ -73,9 +74,12 @@ const moveSnake = () => {
 
     snake.unshift(snakeHead)
     //***NEED to update false with food eaten logic***
-    if(false){
-
-    } else {
+    if(snake[0].x == foodX && snake[0].y == foodY) {
+        score += 1
+        scoreCurrent.textContent = score
+        createFood()
+    } 
+    else {
         snake.pop()
     }
 
@@ -83,7 +87,7 @@ const moveSnake = () => {
 
 
 
-
+// Places food at random location within the canvas
 const createFood = () => {
     const randFoodLoc = (min, max) => {
         let randNum = Math.round((Math.random() * (max - min) + min) / foodUnitSize) * foodUnitSize
@@ -92,6 +96,8 @@ const createFood = () => {
     foodX = randFoodLoc(0, gameWidth - foodUnitSize)
     foodY = randFoodLoc(0, gameWidth - foodUnitSize)
 }
+
+// Generates a block of neon red food
 const drawFood = () => {
     ctx.fillStyle = foodColor
     ctx.fillRect(foodX, foodY, foodUnitSize, foodUnitSize)
@@ -139,10 +145,13 @@ const changeDirection = (event) => {
 
 const startGame = () => {
     running = true
+    //scoreCurrent.textContent = score
     createFood()
     drawFood()
     drawBoard()
 }
+
+
 
 //draws the game in each frame, determines refresh rate
 const drawBoard = () => {
@@ -152,13 +161,16 @@ const drawBoard = () => {
             drawFood()
             moveSnake()
             drawSnake()
+            checkGameOver()
             drawBoard()
         }, 1000 / speed)
+    }
+    else {
+        displayGameOver()
     }
 }
 
 startGame()
-
 
 const checkGameOver = () => {}
 const displayGameOver = () => {}
@@ -167,5 +179,5 @@ const resetGame = () => {}
 
 // Event listener for arrow keys
 window.addEventListener('keydown', changeDirection)
-
+resetBtn.addEventListener('click', resetGame)
 
