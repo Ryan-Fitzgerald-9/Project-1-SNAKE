@@ -5,6 +5,7 @@ const scoreCurrent = document.querySelector('#current-score')
 const scoreHigh = document.querySelector('#high-score')
 const startBtn = document.querySelector('#start-button')
 const resetBtn = document.querySelector('#restart-button')
+const gameArena = document.getElementById("container")
 
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
@@ -223,5 +224,20 @@ clearBoard()
 window.addEventListener('keydown', changeDirection)
 resetBtn.addEventListener('click', resetGame)
 startBtn.addEventListener('click', startGame)
+
+document.addEventListener("DOMContentLoaded", function () {
+    const startupScreen = document.getElementById("startup-screen")
+    const playBtn = document.getElementById("lets-play")
+    
+
+    playBtn.addEventListener("click", clearBoard)
+
+    function clearBoard() {
+        startupScreen.style.display = "none"
+        gameArena.style.display = "block"
+    }
+})
+
+
 
 
