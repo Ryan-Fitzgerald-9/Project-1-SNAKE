@@ -8,10 +8,6 @@ const resetBtn = document.querySelector('#restart-button')
 const gameArena = document.getElementById("container")
 const highScoreValue = document.querySelector("#high-score")
 
-const openBtn = document.getElementById('openModal');
-const modal = document.getElementById('modal')
-const close = document.getElementById('close')
-
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
 
@@ -19,8 +15,8 @@ const gameBackground = "black"
 const snakeColor = "#04d9ff"
 const foodColor = '#fe019a'
 
-const snakeUnitSize = 15
-const foodUnitSize = 15
+const snakeUnitSize = 20
+const foodUnitSize = 20
 
 let speed = 10
 let timeout = setTimeout
@@ -164,12 +160,11 @@ const displayGameOver = () => {
     let gradientGameOver = ctx.createLinearGradient(0, 0, gameBoard.width, 0)
     gradientGameOver.addColorStop("1.0", "#04d9ff")
     gradientGameOver.addColorStop("0", "#fe019a")
-    //gradientGameOver.addColorStop("1.0", "#bc13fe")
     
     // Fill with gradient
     ctx.fillStyle = gradientGameOver
     ctx.textAlign = "center"
-    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2)
+    ctx.fillText("GAME OVER", gameWidth / 2, gameHeight / 2)
     running = false
 }
 
@@ -207,14 +202,6 @@ const drawBoard = () => {
         updateHighScore()
     }
 }
-
-const openModal = () => {
-    modal.style.display = 'block';
-  }
-  
-  const closeModal = () => {
-    modal.style.display = 'none'
-  }
 
 const startGame = () => {
     running = true
@@ -264,8 +251,5 @@ document.addEventListener("DOMContentLoaded", function () {
     
 })
 
-openBtn.addEventListener('click', openModal)
-
-close.addEventListener('click', closeModal)
 
 
