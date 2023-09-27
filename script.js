@@ -16,8 +16,8 @@ const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
 
 const gameBackground = "black"
-const snakeColor = "#0cff0c"
-const foodColor = '#ff073a'
+const snakeColor = "#04d9ff"
+const foodColor = '#fe019a'
 
 const snakeUnitSize = 15
 const foodUnitSize = 15
@@ -162,9 +162,9 @@ const checkGameOver = () => {
 const displayGameOver = () => {
     ctx.font = "50px Verdana"
     let gradientGameOver = ctx.createLinearGradient(0, 0, gameBoard.width, 0)
-    gradientGameOver.addColorStop("0", "#70FFDF")
-    gradientGameOver.addColorStop("0.5", "#FF4DF0")
-    gradientGameOver.addColorStop("1.0", "#9D4DFF")
+    gradientGameOver.addColorStop("1.0", "#04d9ff")
+    gradientGameOver.addColorStop("0", "#fe019a")
+    //gradientGameOver.addColorStop("1.0", "#bc13fe")
     
     // Fill with gradient
     ctx.fillStyle = gradientGameOver
