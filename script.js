@@ -8,8 +8,8 @@ const resetBtn = document.querySelector('#restart-button')
 const gameArena = document.getElementById("container")
 const highScoreValue = document.querySelector("#high-score")
 
-const eatSound = document.getElementById("eatSound")
 const gameOverSound = document.getElementById("gameOverSound")
+const gameMusic = document.getElementById("backgroundMusic")
 
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
@@ -47,12 +47,21 @@ let snake = [
 ]
 
 // FUNCTIONS
-const playEatSound = () => {
-    eatSound.play()
+const playGameMusic = () => {
+    gameMusic.play()
 }
+
+const pauseGameMusic = () => {
+    gameMusic.pause()
+}
+
 const playGameOverSound = () => {
     gameOverSound.play()
 }
+
+gameMusic.volume = 0.2
+gameOverSound.volume = 0.5
+
 const updateHighScore = () => {
     if (score > highScore)
     highScore = score
@@ -79,7 +88,6 @@ const moveSnake = () => {
     if(snake[0].x == foodX && snake[0].y == foodY) {
         score += 1
         scoreCurrent.innerHTML = `Score: ${score}`
-        playEatSound()
         createFood()
     } 
     else {
@@ -95,6 +103,7 @@ const createFood = () => {
     foodX = randFoodLoc(0, gameWidth - foodUnitSize)
     foodY = randFoodLoc(0, gameHeight - foodUnitSize)
 }
+
 // Generates a block of neon red food
 const drawFood = () => {
     ctx.fillStyle = foodColor
@@ -200,6 +209,7 @@ const drawBoard = (timestamp) => {
         requestAnimationFrame(drawBoard)
     }
     else {
+        pauseGameMusic()
         displayGameOver()
         playGameOverSound()
         updateHighScore()
@@ -210,6 +220,7 @@ const startGame = () => {
     running = true
     speed = 12
     scoreCurrent.innerHTML = `Score: ${score}`
+    playGameMusic()
     createFood()
     drawFood()
     lastUpdateTime = performance.now()
