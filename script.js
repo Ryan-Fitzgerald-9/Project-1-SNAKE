@@ -8,6 +8,9 @@ const resetBtn = document.querySelector('#restart-button')
 const gameArena = document.getElementById("container")
 const highScoreValue = document.querySelector("#high-score")
 
+const eatSound = document.getElementById("eatSound")
+const gameOverSound = document.getElementById("gameOverSound")
+
 const gameWidth = gameBoard.width
 const gameHeight = gameBoard.height
 
@@ -18,8 +21,15 @@ const foodColor = '#fe019a'
 const snakeUnitSize = 20
 const foodUnitSize = 20
 
-let speed = 10
-let timeout = setTimeout
+const speedLevels = [
+    { scoreThreshold: 0, speed: 12 },
+    { scoreThreshold: 5, speed: 15 },
+    { scoreThreshold: 15, speed: 20 },
+    { scoreThreshold: 25, speed: 25 },
+    { scoreThreshold: 35, speed: 30 },
+]
+
+let speed = 12
 
 let running = false
 
@@ -36,15 +46,18 @@ let snake = [
     {x: 0, y: 0}
 ]
 
-
 // FUNCTIONS
-
+const playEatSound = () => {
+    eatSound.play()
+}
+const playGameOverSound = () => {
+    gameOverSound.play()
+}
 const updateHighScore = () => {
     if (score > highScore)
     highScore = score
     highScoreValue.textContent = `Best: ${highScore}`
 }
-
 const clearBoard = () => {
     ctx.fillStyle = gameBackground
     ctx.fillRect(0, 0, gameWidth, gameHeight)
@@ -66,16 +79,13 @@ const moveSnake = () => {
     if(snake[0].x == foodX && snake[0].y == foodY) {
         score += 1
         scoreCurrent.innerHTML = `Score: ${score}`
+        playEatSound()
         createFood()
     } 
     else {
         snake.pop()
     }
-
 }
-
-
-
 // Places food at random location within the canvas
 const createFood = () => {
     const randFoodLoc = (min, max) => {
@@ -85,14 +95,11 @@ const createFood = () => {
     foodX = randFoodLoc(0, gameWidth - foodUnitSize)
     foodY = randFoodLoc(0, gameHeight - foodUnitSize)
 }
-
 // Generates a block of neon red food
 const drawFood = () => {
     ctx.fillStyle = foodColor
     ctx.fillRect(foodX, foodY, foodUnitSize, foodUnitSize)
 }
-
-
 // Using arrow keys to change direction of the snake
 const changeDirection = (event) => {
     const pressedKey = event.keyCode
@@ -129,13 +136,10 @@ const changeDirection = (event) => {
             xMovement = snakeUnitSize
             yMovement = 0
             break     
-    }
-        
+    }  
 }
 // Game over logic => snake running into wall or itself
 const checkGameOver = () => {
-    // added 100ms delay to navigate walls easier
-    setTimeout(() => {
         switch (true) {
           case snake[0].x < 0:
           case snake[0].x >= gameWidth:
@@ -144,14 +148,12 @@ const checkGameOver = () => {
             running = false
             break
         }
-      }, 100)
     // Snake head running into its body      
     for(let i = 1; i < snake.length; i+= 1) {
         if(snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
             running = false
         }
     }
-     
 }
 
 // Displays GAME OVER! in the center of the canvas
@@ -167,49 +169,51 @@ const displayGameOver = () => {
     ctx.fillText("GAME OVER", gameWidth / 2, gameHeight / 2)
     running = false
 }
-
-
+// Updates speed based on speedLevels breakdown
+const updateSpeed = () => {
+    for (const level of speedLevels) {
+        if (score >= level.scoreThreshold) {
+            speed = level.speed
+        } else {
+            break
+        }
+    }
+}
 
 // Draws the game in each frame, determines refresh rate
-const drawBoard = () => {
-    if(running) {
-        timeout = setTimeout(() => {
+let lastUpdateTime = 0
+
+const drawBoard = (timestamp) => {
+    const gameTime = timestamp - lastUpdateTime
+
+    if(gameTime >= 1000 / speed) {
             clearBoard()
             drawFood()
             moveSnake()
             drawSnake()
             checkGameOver()
-            drawBoard()
-            if ( score > 5) {
-                speed = 12
-            }
-            if ( score > 10) {
-                speed = 15
-            }
-            if ( score > 15) {
-                speed = 20
-            }
-            if ( score > 25) {
-                speed = 25
-            }
-            if ( score > 35) {
-                speed = 30
-            }
-        }, 1000 / speed)
+            updateSpeed()
+            lastUpdateTime = timestamp
+    }
+
+    if (running) {
+        requestAnimationFrame(drawBoard)
     }
     else {
         displayGameOver()
+        playGameOverSound()
         updateHighScore()
     }
 }
 
 const startGame = () => {
     running = true
-    speed = 10
+    speed = 12
     scoreCurrent.innerHTML = `Score: ${score}`
     createFood()
     drawFood()
-    drawBoard()
+    lastUpdateTime = performance.now()
+    drawBoard(performance.now())
 }
 
 const resetGame = () => {
@@ -222,14 +226,8 @@ const resetGame = () => {
     {x: snakeUnitSize, y: 0},
     {x: 0, y: 0}
     ]
-    clearTimeout(timeout)
     clearBoard()
-    
 }
-
-
-clearBoard()
-
 
 // Event listener for arrow keys
 window.addEventListener('keydown', changeDirection)
@@ -247,8 +245,6 @@ document.addEventListener("DOMContentLoaded", function () {
         startupScreen.style.display = "none"
         gameArena.style.display = "block"
     }
-
-    
 })
 
 
