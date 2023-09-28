@@ -16,7 +16,6 @@ button {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    /* background-color: black; */
     width: 100%;
     height: 100vh;
     
@@ -45,7 +44,6 @@ button {
 #begin-game {
     display: flex;
     justify-content: center;
-    
 }
 
 #lets-play {
@@ -54,6 +52,7 @@ button {
 
 #start-button {
     background-color: black;
+    display: inline-block;
 }
 
 #lets-play, #start-button {
@@ -61,13 +60,12 @@ button {
     margin: 0.25em;
     border-radius: 0.75em;
     font-size: 30px;
-    display: inline-block;
     cursor: pointer;
     text-decoration: none;
     color: #04d9ff;
     border: currentColor 3px solid;
     box-shadow: inset 0 0 .5em 0 currentColor, 0 0 .5em 0 currentColor;
-    text-shadow: 0 0 0.25em currentColor
+    text-shadow: 0 0 0.35em currentColor
 }
 
 #restart-button {
@@ -99,32 +97,35 @@ button {
 
 #current-score, #high-score {
     color: #04d9ff;
-    font-size: 27px;
+    font-size: 30px;
     text-shadow: 0 0 0.5em currentColor
 }
 
 #scores {
     display: flex;
     justify-content: center;
-    gap: 20em;
+    gap: 25em;
     padding: 1em;
 }
 
 #buttons {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 100px;
 }
 
-#begin-game, #buttons {
+#lets-play,
+#restart-button,
+#start-button {
     transition: all 0.5s;
     
 }
 
-#begin-game:hover,
+#lets-play:hover,
 #restart-button:hover,
 #start-button:hover {
     transform: scale(0.9);
+    box-shadow: inset 0 0 .75em 0 currentColor, 0 0 1em 0 currentColor;
 }
 
 

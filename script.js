@@ -156,7 +156,7 @@ const checkGameOver = () => {
 
 // Displays GAME OVER! in the center of the canvas
 const displayGameOver = () => {
-    ctx.font = "50px Verdana"
+    ctx.font = "75px Verdana"
     let gradientGameOver = ctx.createLinearGradient(0, 0, gameBoard.width, 0)
     gradientGameOver.addColorStop("1.0", "#04d9ff")
     gradientGameOver.addColorStop("0", "#fe019a")
