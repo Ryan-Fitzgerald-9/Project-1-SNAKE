@@ -5,7 +5,7 @@ This project is a version of the classic mobile game Snake.
 ![Game Screenshot](assets/snake-screenshot.png)
 
 ### Link to Game
-[Snake](ryan-snake-print.surge.sh)
+[SNAKE](https://ryan-snake-print.surge.sh/)
 
 ### How To Play
 It is a single player game where the user directs the snake towards the food (dot) on screen using the arrow keys. Once the food is reached, a new block is added to the current snake and another food block will appear at a random location on screen. The game ends when the snake either moves into the border or into itself. The goal is to make the snake as large as possible before that happens. 
