@@ -23,7 +23,7 @@ const foodUnitSize = 20
 
 const speedLevels = [
     { scoreThreshold: 0, speed: 12 },
-    { scoreThreshold: 5, speed: 15 },
+    { scoreThreshold: 5, speed: 16 },
     { scoreThreshold: 15, speed: 20 },
     { scoreThreshold: 25, speed: 25 },
     { scoreThreshold: 35, speed: 30 },
@@ -48,6 +48,7 @@ let snake = [
 
 // FUNCTIONS
 const playGameMusic = () => {
+    gameMusic.loop = true
     gameMusic.play()
 }
 
@@ -59,8 +60,8 @@ const playGameOverSound = () => {
     gameOverSound.play()
 }
 
-gameMusic.volume = 0.2
-gameOverSound.volume = 0.5
+gameMusic.volume = 0.4
+gameOverSound.volume = 0.9
 
 const updateHighScore = () => {
     if (score > highScore)
@@ -171,12 +172,12 @@ const displayGameOver = () => {
     let gradientGameOver = ctx.createLinearGradient(0, 0, gameBoard.width, 0)
     gradientGameOver.addColorStop("1.0", "#04d9ff")
     gradientGameOver.addColorStop("0", "#fe019a")
-    
-    // Fill with gradient
     ctx.fillStyle = gradientGameOver
     ctx.textAlign = "center"
     ctx.fillText("GAME OVER", gameWidth / 2, gameHeight / 2)
     running = false
+    pauseGameMusic()
+    playGameOverSound()
 }
 // Updates speed based on speedLevels breakdown
 const updateSpeed = () => {
@@ -209,9 +210,7 @@ const drawBoard = (timestamp) => {
         requestAnimationFrame(drawBoard)
     }
     else {
-        pauseGameMusic()
         displayGameOver()
-        playGameOverSound()
         updateHighScore()
     }
 }
@@ -240,6 +239,8 @@ const resetGame = () => {
     clearBoard()
 }
 
+clearBoard()
+
 // Event listener for arrow keys
 window.addEventListener('keydown', changeDirection)
 resetBtn.addEventListener('click', resetGame)
@@ -247,6 +248,7 @@ startBtn.addEventListener('click', startGame)
 
 document.addEventListener("DOMContentLoaded", function () {
     const startupScreen = document.getElementById("startup-screen")
+    
     const playBtn = document.getElementById("lets-play")
     
 
